@@ -1,0 +1,7 @@
+{
+  "name": "ijobwatch",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
