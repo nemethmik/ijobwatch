@@ -2,7 +2,11 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import {Home} from './pages/Home'
+import {LoginPage} from './pages/Login'
+import {RunningJobPage} from "./pages/RunningJob"
+import {ResourcesPage} from "./pages/Resources"
+import {StartJobPage} from "./pages/StartJob"
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -21,17 +25,23 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-import './theme/variables.css';
+import './theme/variables.css' // Set the theme to dark to consume less power on mobile devices
+import {JobWatchContextProvider} from "./JobWatchContext"
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/home" component={Home} exact={true} />
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-      </IonRouterOutlet>
-    </IonReactRouter>
+    <JobWatchContextProvider>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route path="/home" component={Home} exact={true} />
+          <Route exact path="/" render={() => <Redirect to="/home" />} />
+          <Route path="/login" component={LoginPage} exact={true} />
+          <Route path="/runningjob" component={RunningJobPage} exact={true} />
+          <Route path="/resources" component={ResourcesPage} exact={true} />
+          <Route path="/startjob" component={StartJobPage} exact={true} />
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </JobWatchContextProvider>
   </IonApp>
-);
-
+)
 export default App;
