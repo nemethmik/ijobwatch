@@ -3,8 +3,8 @@ import {RouteComponentProps} from "react-router"
 import {NavContext,IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonFooter, 
   IonSegment, IonSegmentButton, IonLabel, IonIcon, IonList, IonBadge, IonSearchbar, IonItem,
   IonLoading} from "@ionic/react"
-import {arrowBack,cog,person, people} from "ionicons/icons"
-import {JobWatchContext, baseUrl, toast} from "../JobWatchContext"
+import {arrowBack,cog,people} from "ionicons/icons"
+import {JobWatchContext, toast} from "../JobWatchContext"
 // import {uqQueryOpenJobsToStartForUserAndResource} from "../JobWatchAPI"
 import {onResourceSelectedForOpenJobs} from "../JobWatchAppLogic"
 export const ResourcesPage:React.FC<RouteComponentProps> = ({history}) => {

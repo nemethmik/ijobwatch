@@ -23,3 +23,19 @@ Since the application logic is cleanly separated from the UI technology, any UI 
 React and TypeScript are fundamental parts of the application, they are the backbone.
 
 SQL Broker could be easily replaced, too, just implement JobWatchAPI functions and you are done. 
+
+## React Optimization Experimenting with memo, useMemo, useReducer
+Totally meaningless to fuss about these optimization techniques.
+Whatever you do it's almost impossible to reduce significantly the number of re-renderings of React components. This is characteristic of reactive applications. The application programmer declares the applications triggers state cahnges with useState or useReducer, but the rest is the job of the React framework which is basically an application state and life-cycle management framework.
+The good news is that React and all other similar frameworks do it really fine with their behind-scene virtual-DOM-based rendering optimization machinery.
+If you think it's not optimal it's better to drop the framework completely, when you start thinking of using functions like useMemo, memoization, useCallback, you'd better stop using that framework completely and go back to framework-less classic web development.
+
+## Literature References
+- (Harry Wolff)[https://hswolff.com/blog/why-i-love-usereducer/] has an excellent series about react reducer hooks
+  - useReducer is a React-standard alternative of useState, but gives some additional complexity, but that could be completely fine. A reducer could be defined for page level or the entire application level. Anyway, if you reach a point to factor out the application logic, which is a mediator between the UI (IonPage) and the backend business logic API services, then definitely using the reducer pattern is the "standard" way to go, since this is well known and every React programmer would understand immediately.
+  - However, when you are about to use tool like (Immer, as suggested by Harry Wolff)[https://hswolff.com/blog/level-up-usereducer-with-immer/], then you are about to rethink if your application architecture is optimal.
+  - (useContext could be used with reducers)[https://hswolff.com/blog/how-to-usecontext-with-usereducer], too, but it is not needed at all when the app structure has only one context provider root.
+  On the other hand, using context is really harmless, and you can even create a context for each page, sou you can have an application level global context and a subcontext for every page, this could be a quite meaningful architecture to show off your skills and deep-knowledge of React.
+
+- (Ken C. Dodds)[https://kentcdodds.com/blog/super-simple-start-to-react] has a number of excellent articles about React programming and specifically reducers and (contexts)[https://kentcdodds.com/blog/how-to-use-react-context-effectively].
+ 

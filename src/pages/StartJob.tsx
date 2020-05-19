@@ -2,11 +2,11 @@ import React from "react"
 import {RouteComponentProps} from "react-router"
 import {NavContext,IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonFooter, 
   IonSegment, IonSegmentButton, IonLabel, IonIcon, IonList, IonBadge, IonSearchbar, IonItem, IonItemDivider} from "@ionic/react"
-import {arrowBack,cog,person, people, key} from "ionicons/icons"
+import {arrowBack,cog, people} from "ionicons/icons"
 import {JobWatchContext,formatDate,formatTime,getFloat} from "../JobWatchContext"
 // import { TQueryOpenJobsToStartForUserAndResource } from "../JobWatchAPI"
 export const StartJobPage:React.FC<RouteComponentProps> = ({history}) => {
-  const {state,dispatch} = React.useContext(JobWatchContext)
+  const {state} = React.useContext(JobWatchContext)
   const { navigate } = React.useContext(NavContext);
   const goBackTo = (dest: string) => navigate(dest, "back") // Actually, no need for React.useCallback, at all
   const onJobSelected = (docEntry:string,lineNum:string) => {} 
@@ -14,7 +14,7 @@ export const StartJobPage:React.FC<RouteComponentProps> = ({history}) => {
     let runningDate: string = ""
     return state.openJobs?.map(j => {
       let optionalItemDividerForDate = (<></>)
-      if(j.EffStartDate != runningDate) {
+      if(j.EffStartDate !== runningDate) {
         runningDate = j.EffStartDate
         optionalItemDividerForDate = (
           <IonItemDivider color="primary" key={j.DocEntry + "+" + j.LineNum}>

@@ -33,6 +33,7 @@ const App: React.FC = () => (
     <JobWatchContextProvider>
       <IonReactRouter>
         <IonRouterOutlet>
+          {/** React.useMemo(() => Home,[Home]) was a disaster, MemoizedHome was called the same number of times*/}
           <Route path="/home" component={Home} exact={true} />
           <Route exact path="/" render={() => <Redirect to="/home" />} />
           <Route path="/login" component={LoginPage} exact={true} />

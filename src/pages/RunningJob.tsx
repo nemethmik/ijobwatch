@@ -7,7 +7,7 @@ import {
 import { arrowForward, person } from "ionicons/icons"
 import {JobWatchContext,minuteDiff,sapDTToDate,formatMinDiff,formatTime,getFloat} from "../JobWatchContext"
 export const RunningJobPage: React.FC<RouteComponentProps> = ({ history }) => {
-  const {state,dispatch} = React.useContext(JobWatchContext)
+  const {state} = React.useContext(JobWatchContext)
   const { navigate } = React.useContext(NavContext);
   const goBackTo = (dest: string) => navigate(dest, "back") // Actually, no need for React.useCallback, at all
   function statusText(statusCode?:string):string | undefined {

@@ -53,6 +53,8 @@ export type TJobWatchContext = {
 //Initial value is mandatory, but I suppress the error, the real initial value is set
 //by the context provider when the reducer is in place
 export const JobWatchContext = React.createContext<TJobWatchContext>(({} as TJobWatchContext))
+// export const JobWatchStateContext = React.createContext<TJobWatchState>(({} as TJobWatchState))
+// export const JobWatchDispatchContext = React.createContext<React.Dispatch<TActions>>(({} as React.Dispatch<TActions>))
 export const JobWatchContextProvider:React.FC = (props) => {
   const [state,dispatch] = React.useReducer<React.Reducer<TJobWatchState,TActions>>(jobWatchReducer,{
     conf: {
@@ -63,10 +65,18 @@ export const JobWatchContextProvider:React.FC = (props) => {
     },
     user: {userCode:"maria"}
   }) 
+  // This from https://hswolff.com/blog/how-to-usecontext-with-usereducer didn't make any improvement
+  //const contextValue = React.useMemo(() => ({ state, dispatch }), [state, dispatch])
+  // For nested context providers, see https://kentcdodds.com/blog/how-to-use-react-context-effectively#the-custom-provider-component
+  // I found zero benefit from applying these optimization techniques
   return (
-    <JobWatchContext.Provider value={{state,dispatch}}>
-      {props.children}
-    </JobWatchContext.Provider>
+    // <JobWatchDispatchContext.Provider value={dispatch}>
+    //   <JobWatchStateContext.Provider value={state}>
+        <JobWatchContext.Provider value={{ state, dispatch }}>
+          {props.children}
+        </JobWatchContext.Provider>
+    //   </JobWatchStateContext.Provider>
+    // </JobWatchDispatchContext.Provider>    
   )
 } 
 // A couple of utilities
