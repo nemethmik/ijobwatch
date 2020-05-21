@@ -142,3 +142,22 @@ export function sapDTToDate(dateStr:string | Date | undefined,timeStr:number | s
     return sd
   } else return undefined
 }
+export function formatSecondsDiff(seconds:number) {
+  const days = Math.floor(seconds/(60*60*24))
+  // console.log("Days",days, "from seconds", seconds)
+  seconds = seconds % (60*60*24)
+  const hours = Math.floor(seconds/(60*60))
+  // console.log("Hours",hours, "from seconds", seconds)
+  seconds = seconds % (60*60)
+  const minutes = Math.floor(seconds/(60))
+  // console.log("Minutes",minutes, "from seconds", seconds)
+  seconds = seconds % (60)
+  // const daysStr = "" + days
+  let hoursStr = "0" + hours
+  hoursStr = hoursStr.substring(hoursStr.length - 2,hoursStr.length) 
+  let minutesStr = "0"+ minutes
+  minutesStr = minutesStr.substring(minutesStr.length - 2,minutesStr.length) 
+  let secondsStr = "0"+ seconds
+  secondsStr = secondsStr.substring(secondsStr.length - 2,secondsStr.length) 
+  return `${days}:${hoursStr}:${minutesStr}:${secondsStr}` 
+}
