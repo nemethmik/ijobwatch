@@ -2,13 +2,16 @@ import React from "react"
 import { RouteComponentProps } from "react-router"
 import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonFooter, IonSegment,
-  IonSegmentButton, IonLabel, IonIcon, NavContext, IonGrid, IonRow, IonCol, IonItem, IonItemDivider
+  IonSegmentButton, IonLabel, IonIcon, NavContext, IonGrid, IonRow, IonCol, IonItem, IonItemDivider,
+  IonLoading,
 } from "@ionic/react"
 import { arrowForward, person } from "ionicons/icons"
-import {JobWatchContext,minuteDiff,sapDTToDate,formatMinDiff,formatTime,getFloat,formatSecondsDiff} from "../JobWatchContext"
+import {JobWatchContext,minuteDiff,sapDTToDate,formatMinDiff,formatTime,getFloat,formatSecondsDiff,toast} from "../JobWatchContext"
+import {onStopRunningJob} from "../JobWatchAppLogic"
 import {Timer} from "../components/Timer"
 export const RunningJobPage: React.FC<RouteComponentProps> = ({ history }) => {
-  const {state} = React.useContext(JobWatchContext)
+  const {state,dispatch} = React.useContext(JobWatchContext)
+  const [loading,setLoading] = React.useState<boolean>(false)
   const { navigate } = React.useContext(NavContext);
   const goBackTo = (dest: string) => navigate(dest, "back") // Actually, no need for React.useCallback, at all
   function statusText(statusCode?:string):string | undefined {
@@ -30,6 +33,7 @@ export const RunningJobPage: React.FC<RouteComponentProps> = ({ history }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <IonLoading message="Loading ..." duration={0} isOpen={loading}/>
         <IonGrid>
           <IonRow>
             <IonCol>
@@ -71,7 +75,9 @@ export const RunningJobPage: React.FC<RouteComponentProps> = ({ history }) => {
               <IonIcon icon={person} />
               <IonLabel>Logout</IonLabel>
             </IonSegmentButton>
-            <IonSegmentButton onClick={()=>history.push("/resources")}>
+            <IonSegmentButton onClick={() => 
+              onStopRunningJob(setLoading,toast,
+              dispatch,()=>history.push("/quantities"), state.job?.DocEntry!, state.job?.U_LineNum!,state)}>
               <IonIcon icon={arrowForward} />
               <IonLabel>Stop</IonLabel>
             </IonSegmentButton>

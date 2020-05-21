@@ -7,7 +7,7 @@ import {LoginPage} from './pages/Login'
 import {RunningJobPage} from "./pages/RunningJob"
 import {ResourcesPage} from "./pages/Resources"
 import {StartJobPage} from "./pages/StartJob"
-
+import {QuantitiesPage} from "./pages/Quantities"
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -40,6 +40,7 @@ const App: React.FC = () => (
           <Route path="/runningjob" component={RunningJobPage} exact={true} />
           <Route path="/resources" component={ResourcesPage} exact={true} />
           <Route path="/startjob" component={StartJobPage} exact={true} />
+          <Route path="/quantities" component={QuantitiesPage} exact={true} />
         </IonRouterOutlet>
       </IonReactRouter>
     </JobWatchContextProvider>

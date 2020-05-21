@@ -8,7 +8,7 @@ type NoPasswordConnection = {
   DbServerType: string,
   AdoNetUser: string
 }
-export type SQLResult = {
+export type TSQLResult = {
   statusCode: number,
   rollbackOnly: boolean,
   errorCode: number,
@@ -69,7 +69,7 @@ export type SQLResult = {
 //       onError("" + error)
 //     }
 // }
-export function userQueryAxios(onSuccess:(data:SQLResult)=>void, onError:(errorText:string)=>void, onFinally:()=>void,
+export function userQueryAxios(onSuccess:(data:TSQLResult)=>void, onError:(errorText:string)=>void, onFinally:()=>void,
   baseUrl:string,category:string,uqName:string,pars:string,profile:string,timeout:number) {
   try {
     let queryStr = `${profile ? 'profile=' + profile : ''}`
@@ -78,6 +78,68 @@ export function userQueryAxios(onSuccess:(data:SQLResult)=>void, onError:(errorT
       else queryStr = pars
     }
     const url = `${baseUrl}UQ/${category}/${uqName}?${queryStr}`
+    console.log(url)
+    axios(url,{timeout}).then(response => {
+      console.log(response);
+      onSuccess(response.data)
+    }).catch(error => {
+      if(error.response) {
+        //console.log("Response has Data",error.response.data);
+        if(error.response.status === 400 && error.response.data.errorText) {
+          onError(error.response.data.errorText)
+        } else  if(error.response.data.Message) { //Invalid request, for example
+          onError(`${error.response.data.Message} for ${url}`)
+        } else {
+          onError("" + error.response.data)
+        } 
+      } else {
+        console.log("Response Error",error);      
+        onError("" + error)
+      }
+    }).finally(() => onFinally())
+  } catch(error) {
+    //console.log(error)
+    onError("" + error)
+  } finally {onFinally()}
+} 
+export type TBOResult = {
+  "jobNumber": string,
+  "statusCode": string,
+  "errorCode": string,
+  "errorText": string,
+  "errorStackTrace": string,
+  "found": string,
+  "id": string,
+  "execMillis": number,
+  "bo": {
+      "BOM": {
+          "BO": {
+              "AdmInfo": {
+                  "Object": string
+              },
+              [key:string]:any,
+          }
+      }
+  },
+  "rawXml": string,
+  "xmlSchema": string,
+  "connection": {
+      "Profile": string,
+      "CompanyDB": string,
+      "Server": string,
+      "DbUserName": string,
+      "UserName": string,
+      "DbServerType": string,
+      "AdoNetUser": string
+  },
+  "reqType": string,
+  "boName": string
+}
+export function getBOAxios(onSuccess:(data:TBOResult)=>void, onError:(errorText:string)=>void, onFinally:()=>void,
+  baseUrl:string,boName:string,boId:string,profile:string,timeout:number) {
+  try {
+    let queryStr = `${profile ? 'profile=' + profile : ''}`
+    const url = `${baseUrl}BO/${boName}/${boId}?${queryStr}`
     console.log(url)
     axios(url,{timeout}).then(response => {
       console.log(response);

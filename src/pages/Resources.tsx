@@ -21,7 +21,7 @@ export const ResourcesPage:React.FC<RouteComponentProps> = ({history}) => {
         <IonToolbar><IonTitle>Resources</IonTitle></IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonLoading message="Logging in ..." duration={0} isOpen={loading}/>
+        <IonLoading message="Loading ..." duration={0} isOpen={loading}/>
         <IonSearchbar></IonSearchbar>
         <IonList>
           {

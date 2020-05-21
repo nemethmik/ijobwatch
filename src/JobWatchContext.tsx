@@ -1,5 +1,6 @@
 import React from "react"
 import {TQueryEmployeeByUserCode,TQueryResourcesForUser,TQueryRunningJobsForUser,TQueryOpenJobsToStartForUserAndResource} from "./JobWatchAPI"
+import {TProductionOrder} from "./ProductionOrder"
 //State type definitions
 export type TConf = {
   isHttps: boolean,
@@ -17,7 +18,8 @@ export type TJobWatchState = {
   readonly emp?: TQueryEmployeeByUserCode,
   readonly resources?: [TQueryResourcesForUser],
   readonly job?: TQueryRunningJobsForUser,
-  readonly openJobs?: [TQueryOpenJobsToStartForUserAndResource]
+  readonly openJobs?: [TQueryOpenJobsToStartForUserAndResource],
+  readonly prodOrder?: TProductionOrder,
 }
 // Actions
 //TQueryEmployeeByUserCode,TQueryResourcesForUser,TQueryRunningJobsForUser,TQueryOpenJobsToStartForUserAndResource
@@ -27,9 +29,10 @@ type TActionQueryEmployeeByUserCode = {readonly type:"QueryEmployeeByUserCode", 
 type TActionQueryResourcesForUser = {readonly type:"QueryResourcesForUser", readonly resources: [TQueryResourcesForUser]}
 type TActionQueryRunningJobsForUser = {readonly type:"QueryRunningJobsForUser", readonly job: TQueryRunningJobsForUser}
 type TActionQueryOpenJobsToStartForUserAndResource = {readonly type:"QueryOpenJobsToStartForUserAndResource", readonly openJobs: [TQueryOpenJobsToStartForUserAndResource]}
+type TActionProductionOrder = {readonly type:"ProductionOrder", readonly prodOrder: TProductionOrder}
 export type TActions = TActionConf | TActionUser | 
   TActionQueryEmployeeByUserCode | TActionQueryResourcesForUser | TActionQueryRunningJobsForUser |
-  TActionQueryOpenJobsToStartForUserAndResource
+  TActionQueryOpenJobsToStartForUserAndResource | TActionProductionOrder
 //The reducer
 function jobWatchReducer(state:TJobWatchState,action:TActions):TJobWatchState {
   switch(action.type) {
@@ -39,6 +42,7 @@ function jobWatchReducer(state:TJobWatchState,action:TActions):TJobWatchState {
     case "QueryResourcesForUser": return {...state, resources: action.resources}
     case "QueryRunningJobsForUser": return {...state, job: action.job}
     case "QueryOpenJobsToStartForUserAndResource": return {...state, openJobs: action.openJobs}
+    case "ProductionOrder": return {...state, prodOrder: action.prodOrder}
     default: neverReached(action) // Very nifty application of never 
   }
   return state

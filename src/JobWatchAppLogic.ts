@@ -1,6 +1,7 @@
 import {uqTestConnection,uqQueryEmployeeByUserCode,uqQueryRunningJobsForUser,uqQueryResourcesForUser,
-  uqQueryOpenJobsToStartForUserAndResource} from "./JobWatchAPI"
+  uqQueryOpenJobsToStartForUserAndResource,getProductionOrder} from "./JobWatchAPI"
 import {TActions,TToastFn,baseUrl,TJobWatchState} from "./JobWatchContext"
+import { TProductionOrder } from "./ProductionOrder"
 export function onConfigDoneClick(isHttps:boolean,hostName:string,portNumber:number,serviceName:string,
   setLoading:(loading:boolean)=>void,toast:TToastFn,
   goLogin:()=>void,dispatch:(action:TActions)=>void) {
@@ -71,5 +72,14 @@ export function onResourceSelectedForOpenJobs(setLoading:(loading:boolean)=>void
       toast(`No open jobs found for resource ${resCode}`,2,"warning","middle")
     }
   },(errorText)=>toast(errorText,4,"danger","middle"),()=>setLoading(false),baseUrl(state.conf),resCode,state.user.userCode)
+}
 
+export function onStopRunningJob(setLoading:(loading:boolean)=>void,toast:TToastFn,
+  dispatch:(action:TActions)=>void,goQuantitiesPage:()=>void,docEntry:string,lineNum:string,state:TJobWatchState) {
+  setLoading(true)
+  getProductionOrder((prodOrder:TProductionOrder)=>{
+    dispatch({type:"ProductionOrder",prodOrder})
+    toast(`Production order found for ${docEntry}`,1,"success","bottom")
+    goQuantitiesPage()
+  },(errorText)=>toast(errorText,4,"danger","middle"),()=>setLoading(false),baseUrl(state.conf),parseInt(docEntry),6000)
 }

@@ -1,7 +1,8 @@
-import {userQueryAxios, SQLResult} from "./sqlbroker"
+import {userQueryAxios, TSQLResult, TBOResult, getBOAxios} from "./sqlbroker"
+import {TProductionOrder} from "./ProductionOrder"
 let PROFILE:string = ""
 export function setProfile(profile:string) {PROFILE = profile}
-export function uqTestConnection(onSuccess:(data:SQLResult)=>void, onError:(errorText:string)=>void, onFinally:()=>void,
+export function uqTestConnection(onSuccess:(data:TSQLResult)=>void, onError:(errorText:string)=>void, onFinally:()=>void,
   baseUrl:string,timeout:number = 6000) {
   userQueryAxios(onSuccess,onError,onFinally,baseUrl,"JobWatch","TestConnection","",PROFILE,timeout)
 }
@@ -23,7 +24,7 @@ export type TQueryEmployeeByUserCode = {
 }
 export function uqQueryEmployeeByUserCode(onSuccess:(empDetails:[TQueryEmployeeByUserCode])=>void, onError:(errorText:string)=>void, onFinally:()=>void,
   baseUrl:string,userCode:string,timeout:number = 6000) {
-  const axSuccess = (sqlResult:SQLResult) => {
+  const axSuccess = (sqlResult:TSQLResult) => {
     const missingField = validateSQLResultAgainstSample(sqlResult,QueryEmployeeByUserCodeSample)
     if(!missingField) onSuccess((sqlResult.data as [TQueryEmployeeByUserCode]))
     else onError(`${missingField} is missing from response data`)
@@ -74,7 +75,7 @@ export type TQueryRunningJobsForUser = {
 }
 export function uqQueryRunningJobsForUser(onSuccess:(runningJobDetails:[TQueryRunningJobsForUser])=>void, onError:(errorText:string)=>void, onFinally:()=>void,
   baseUrl:string,userCode:string,timeout:number = 6000) {
-  const axSuccess = (sqlResult:SQLResult) => {
+  const axSuccess = (sqlResult:TSQLResult) => {
     const missingField = validateSQLResultAgainstSample(sqlResult,QueryRunningJobsForUserSample)
     if(!missingField) onSuccess((sqlResult.data as [TQueryRunningJobsForUser]))
     else onError(`${missingField} is missing from response data`)
@@ -95,14 +96,14 @@ export type TQueryResourcesForUser = {
 }
 export function uqQueryResourcesForUser(onSuccess:(data:[TQueryResourcesForUser])=>void, onError:(errorText:string)=>void, onFinally:()=>void,
   baseUrl:string,userCode:string,timeout:number = 6000) {
-  const axSuccess = (sqlResult:SQLResult) => {
+  const axSuccess = (sqlResult:TSQLResult) => {
     const missingField = validateSQLResultAgainstSample(sqlResult,QueryResourcesForUserSample)
     if(!missingField) onSuccess((sqlResult.data as [TQueryResourcesForUser]))
     else onError(`${missingField} is missing from response data`)
   }  
   userQueryAxios(axSuccess,onError,onFinally,baseUrl,"JobWatch","QueryResourcesForUser",`p0=${userCode}`,PROFILE,timeout)
 }
-function validateSQLResultAgainstSample(sqlResult:SQLResult,sample:{[k:string]:any}):string | null {
+function validateSQLResultAgainstSample(sqlResult:TSQLResult,sample:{[k:string]:any}):string | null {
   if(sqlResult.data && sqlResult.data.length) {
     for(const k in sample) {
       if(!sqlResult.data[0].hasOwnProperty(k)) return k;
@@ -153,10 +154,19 @@ export type TQueryOpenJobsToStartForUserAndResource = {
 }
 export function uqQueryOpenJobsToStartForUserAndResource(onSuccess:(data:[TQueryOpenJobsToStartForUserAndResource])=>void, onError:(errorText:string)=>void, onFinally:()=>void,
   baseUrl:string,resCode:string,userCode:string,timeout:number = 6000) {
-  const axSuccess = (sqlResult:SQLResult) => {
+  const axSuccess = (sqlResult:TSQLResult) => {
     const missingField = validateSQLResultAgainstSample(sqlResult,QueryOpenJobsToStartForUserAndResourceSample)
     if(!missingField) onSuccess((sqlResult.data as [TQueryOpenJobsToStartForUserAndResource]))
     else onError(`${missingField} is missing from response data`)
   }  
   userQueryAxios(axSuccess,onError,onFinally,baseUrl,"JobWatch","QueryOpenJobsToStartForUserAndResource",`p0=${resCode}&p1=${userCode}`,PROFILE,timeout)
+}
+
+export function getProductionOrder(onSuccess:(data:TProductionOrder)=>void, onError:(errorText:string)=>void, onFinally:()=>void,
+baseUrl:string,docNum:number,timeout:number) {
+  const axSuccess = (boResult:TBOResult) => {
+    if(boResult.bo.BOM.BO.OWOR) onSuccess(boResult as TProductionOrder)
+    else onError("No OWOR found in BOM")
+  }
+  getBOAxios(axSuccess, onError, onFinally,baseUrl,"ProductionOrders",docNum.toString(),PROFILE,timeout)
 }
