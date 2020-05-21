@@ -46,10 +46,10 @@ export const Home: React.FC<RouteComponentProps> = ({history}) => {
   console.log("Home",++renderCount)
   // BEGIN useReducer version
     const [state,homeDispatch] = React.useReducer(homeReducer,{hostName:"mikisurface",serviceName:"t11sqlbroker",portNumber:80,isHttps:false})
-    const setHttps = (on:boolean) => homeDispatch({type:"Home",payload:{isHttps:on,portNumber:(on?443:80)}})
-    const setHostName = (hn:string) => homeDispatch({type:"Home",payload:{hostName:hn}})
-    const setServiceName = (sn:string) => homeDispatch({type:"Home",payload:{serviceName:sn}})
-    const setPortNumber = (pn:number) => homeDispatch({type:"Home",payload:{portNumber:pn}})
+    const setHttps = React.useCallback((on:boolean) => homeDispatch({type:"Home",payload:{isHttps:on,portNumber:(on?443:80)}}),[])
+    const setHostName = React.useCallback((hn:string) => homeDispatch({type:"Home",payload:{hostName:hn}}),[])
+    const setServiceName = React.useCallback((sn:string) => homeDispatch({type:"Home",payload:{serviceName:sn}}),[])
+    const setPortNumber = React.useCallback((pn:number) => homeDispatch({type:"Home",payload:{portNumber:pn}}),[])
   // END useReducer version
   // BEGIN useState version
     // const [hostName,setHostName] = React.useState<string>("mikisurface")
