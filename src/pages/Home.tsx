@@ -45,7 +45,7 @@ let renderCount = 0
 export const Home: React.FC<RouteComponentProps> = ({history}) => {
   console.log("Home",++renderCount)
   // BEGIN useReducer version
-    const [state,homeDispatch] = React.useReducer(homeReducer,{hostName:"mikisurface",serviceName:"t11sqlbroker",portNumber:80,isHttps:false})
+    const [state,homeDispatch] = React.useReducer(homeReducer,{hostName:"tiva.asuscomm.com",serviceName:"t11sqlbroker",portNumber:80,isHttps:false})
     const setHttps = React.useCallback((on:boolean) => homeDispatch({type:"Home",payload:{isHttps:on,portNumber:(on?443:80)}}),[])
     const setHostName = React.useCallback((hn:string) => homeDispatch({type:"Home",payload:{hostName:hn}}),[])
     const setServiceName = React.useCallback((sn:string) => homeDispatch({type:"Home",payload:{serviceName:sn}}),[])

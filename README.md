@@ -2,6 +2,13 @@
 
 This is a modern remake of the brilliant JQuery Mobile version of JobWatch.
 
+## IONIC Tools to Make IOS and Android Apps
+- **npm install -E cordova-plugin-ionic**
+- **ionic/npx build** the command to create the actual deployable **build** directory. The **public** directory in an Ionic project is the source folder for the static elements including index.html 
+- **ionic/npx cap add ios | android** to create IOS and Android project folders
+- **ionic/npx cap open ios | android** opens Xcode or Android Studio
+-- **ionic/npx cap sync ios | android** to rebuild the IOS/Android project from the Ionic sources
+
 ## Tools
 - IONIC User Interface library and deployment machinery
 - React JSX and front end framework

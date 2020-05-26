@@ -63,7 +63,7 @@ export const JobWatchContextProvider:React.FC = (props) => {
   const [state,dispatch] = React.useReducer<React.Reducer<TJobWatchState,TActions>>(jobWatchReducer,{
     conf: {
       isHttps: false,
-      hostName: "mikisurface",
+      hostName: "tiva.asuscomm.com",
       serviceName: "t11sqlbroker",
       portNumber: 80,
     },
